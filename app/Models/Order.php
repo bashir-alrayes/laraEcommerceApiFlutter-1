@@ -9,6 +9,9 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'total'];
+    
+
     // Many-to-One relation with User
     public function user()
     {

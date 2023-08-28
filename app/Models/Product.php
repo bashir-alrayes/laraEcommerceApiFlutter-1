@@ -9,6 +9,15 @@ class Product extends Model
 {
     use HasFactory;
 
+
+    protected $fillable = [
+
+    'name' ,
+    'description' ,
+    'price'
+
+    ] ;
+
     // One-to-Many relation with OrderDetails
     public function orderDetails()
     {

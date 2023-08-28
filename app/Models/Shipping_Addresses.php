@@ -14,4 +14,16 @@ class Shipping_Addresses extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $fillable = [
+        'user_id',
+        'first_name',
+        'last_name',
+        'address_line_1',
+        'address_line_2',
+        'city',
+        'state',
+        'zip_code',
+        'country',
+    ];
 }

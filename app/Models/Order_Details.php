@@ -9,6 +9,17 @@ class Order_Details extends Model
 {
     use HasFactory;
 
+    // OrderDetail.php
+
+  protected $fillable = [
+    'order_id', 
+    'product_id', 
+    'quantity', 
+    'price'
+
+];
+
+
      // Many-to-One relation with Order
      public function order()
      {

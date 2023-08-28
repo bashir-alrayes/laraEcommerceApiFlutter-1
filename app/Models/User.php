@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class User extends Authenticatable
 {
@@ -65,4 +71,34 @@ class User extends Authenticatable
     {
         return $this->hasMany(Shipping_Addresses::class);
     }
+
+
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
+     
+        $user = User::where('email', $request->email)->first();
+     
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
+        }
+     
+        return $user->login($request->device_name)->plainTextToken;
+    
+    }
+    
+    public function signout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message'=> 'Token revoked']);
+    }
+
+
 }
